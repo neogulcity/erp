@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel = "stylesheet" href = "css/main.css">
+    <link rel = "stylesheet" href = "css/id.css">
+
+    <script>
+        function open_sidemenu(event){
+            var jegomn = document.getElementById('JEGO-side');
+            var jemumn = document.getElementById('JEMU-side');
+            var gogekmn = document.getElementById('GOGEK-side');
+            var JsonData = JSON.parse(sData);
+            jegomn.style.display = "none";
+            jemumn.style.display = "none";
+            gogekmn.style.display = "none";
+            switch(event.target.value){
+            case "1":
+                if (JsonData["부서 ID"] == "재고") {
+                    jegomn.style.display = "block"
+                } else {
+                    alert("해당 부서에 대한 수정 권한이 없습니다.");
+                }
+                break;
+            case "2":
+                if (JsonData["부서 ID"] == "재무") {
+                    jemumn.style.display = "block"
+                } else {
+                    alert("해당 부서에 대한 수정 권한이 없습니다.");
+                }
+                break;
+            case "3":
+                if (JsonData["부서 ID"] == "고객") {
+                    gogekmn.style.display = "block"
+                } else {
+                    alert("해당 부서에 대한 수정 권한이 없습니다.");
+                }
+                break;
+            }
+        }
+        function open_input(event){
+            var box = [[document.getElementById('ALLJEGO-search'),document.getElementById('Corporate-search'),document.getElementById('Corporate-input')
+                        ,document.getElementById('Corporate-item-search'),document.getElementById('item-input'),document.getElementById('input-item-search')
+                        ,document.getElementById('order'),document.getElementById('order-search')],
+                        [document.getElementById('ALLJEMU-search'),document.getElementById('fixed-expenditure-search'),document.getElementById('fixed-expenditure-input'),
+                        document.getElementById('staff-list-search'),document.getElementById('wating-order-search'),document.getElementById('sale-cost-search')],
+                        [document.getElementById('cs-list-search')]];
+            var a = parseInt((event.target.value)/10);
+            var b = (((event.target.value)%10)-1);
+            for(var i = 0; i<box.length;i++){
+
+                for(var j=0; j<box[i].length;j++){
+                    box[i][j].style.display = "none";
+                }
+            }
+            box[Number(a)][Number(b)].style.display ="block";
+        }
+    </script>    
+</head>
+
+<body>
+    <div class="Topheader">  
+        <div class="Topmenu">
+            <div class ="logo">로고 이미지 자리</div>
+            <label class="menu" ><input type = "radio" id="topradio" name = "tm" value="1" onclick='open_sidemenu(event)'>재고관리</label>
+            <label class="menu" ><input type = "radio" id="topradio" name = "tm" value="2" onclick='open_sidemenu(event)'>재무관리</label>
+            <label class="menu" ><input type = "radio" id="topradio" name = "tm" value="3" onclick='open_sidemenu(event)'>고객관리</label>
+        </div>
+    </div> 
+    <div class = "viewer">
+
+    </div>
+    <section class = "box">
+        <div class = "sidebar">
+            <label class = "Toplabel">MENU</label>
+            <div id = "JEGO-side">
+                <label class="sidemenuTop" style="text-align: center; font-weight: bold; font-size : 20px">재고관리</label>
+                <label class="sidemenu" ><input type = "radio" name = "sm" value="1" onclick='open_input(event)'>전체 재고 조회</label>
+                <label class="sidemenu" ><input type = "radio" name = "sm" value="2" onclick='open_input(event)'>거래처 조회</label>
+                <label class="sidemenu" ><input type = "radio" name = "sm" value="3" onclick='open_input(event)'>거래처 등록</label>
+                <label class="sidemenu" ><input type = "radio" name = "sm" value="4" onclick='open_input(event)'>거래처 물품 조회</label>
+                <label class="sidemenu" ><input type = "radio" name = "sm" value="5" onclick='open_input(event)'>물품 등록</label>
+                <label class="sidemenu" ><input type = "radio" name = "sm" value="6" onclick='open_input(event)'>입고 현황 조회</label>
+                <label class="sidemenu" ><input type = "radio" name = "sm" value="7" onclick='open_input(event)'>발주 요청</label>
+                <label class="sidemenu" ><input type = "radio" name = "sm" value="8" onclick='open_input(event)'>발주 요청 조회</label>
+            </div>
+            <div id = "JEMU-side">
+                <label class="sidemenuTop" style="text-align: center; font-weight: bold; font-size : 20px">재무관리</label>
+                <label class="sidemenu" ><input type = "radio" name = "sm" value="11" onclick='open_input(event)'>전체 재무 조회</label>
+                <label class="sidemenu" ><input type = "radio" name = "sm" value="12" onclick='open_input(event)'>고정 지출 금액 조회</label>
+                <label class="sidemenu" ><input type = "radio" name = "sm" value="13" onclick='open_input(event)'>고정 지출 추가 입력</label>
+                <label class="sidemenu" ><input type = "radio" name = "sm" value="14" onclick='open_input(event)'>직원 명단 조회</label>
+                <label class="sidemenu" ><input type = "radio" name = "sm" value="15" onclick='open_input(event)'>발주 대기 목록 조회</label>
+                <label class="sidemenu" ><input type = "radio" name = "sm" value="16" onclick='open_input(event)'>판매 실적 조회</label>
+            </div>
+            <div id = "GOGEK-side">
+                <label class="sidemenuTop" style="text-align: center; font-weight: bold; font-size : 20px">고객관리</label>
+                <label class="sidemenu" ><input type = "radio" name = "sm" value="21" onclick='open_input(event)'>CS목록 조회</label>
+            </div>
+        </div>
+        <div class="backgroundbox">
+            <div class="inputbox" id="ALLJEGO-search">
+                <div class = "sidevalue">전체 재고 조회</div></br>
+                <label><input type="text" id = ""><button type="submit">검색</button></label>
+                <div><iframe class = "inside" src = "ViewAllGoodspage"></iframe></div>
+            </div>
+            <div class="inputbox" id="Corporate-search">
+                <div class = "sidevalue">거래처 조회</div></br>
+                <label><input type="text" id = ""><button type="submit">검색</button></label>
+                <div><iframe class = "inside" src = "ViewCorppage"></iframe></div>
+            </div>
+            <div class="inputbox" id="Corporate-input">
+                <div class = "sidevalue">거래처 등록</div></br>
+                <label><input type="text" id = ""><button type="submit">검색</button></label>
+                <div><iframe class = "inside" src = "CorpRegipage"></iframe></div>
+            </div>
+            <div class="inputbox" id="Corporate-item-search">
+                <div class = "sidevalue">거래처 물품 조회</div></br>
+                <label><input type="text" id = ""><button type="submit">검색</button></label>
+                <div><iframe class = "inside" src = "ViewCorpGoodspage"></iframe></div>
+            </div>
+            <div class="inputbox" id="item-input">
+                <div class = "sidevalue">물품 등록</div></br>
+                <label><input type="text" id = ""><button type="submit">검색</button></label>
+                <div><iframe class = "inside" src = "GoodsRegipage"></iframe></div>
+            </div>
+            <div class="inputbox" id="input-item-search">
+                <div class = "sidevalue">입고 현황 조회</div></br>
+                <label><input type="text" id = ""><button type="submit">검색</button></label>
+                <div><iframe class = "inside" src = "ViewWarehousingpage"></iframe></div>
+            </div>
+            <div class="inputbox" id="order">
+                <div class = "sidevalue">발주 요청</div></br>
+                <label><input type="text" id = ""><button type="submit">검색</button></label>
+                <div><iframe class = "inside" src = "OrderRequestpage"></iframe></div>
+            </div>
+            <div class="inputbox" id="order-search">
+                <div class = "sidevalue">발주 요청 조회</div></br>
+                <label><input type="text" id = ""><button type="submit">검색</button></label>
+                <div><iframe class = "inside" src = "ViewOrderReqpage"></iframe></div>
+            </div> 
+            <div class="inputbox" id="ALLJEMU-search">
+                <div class = "sidevalue">전체 재무 조회</div></br>
+                <label><input type="text" id = ""><button type="submit">검색</button></label>
+                <div><iframe class = "inside" src = "https://www.naver.com"></iframe></div>
+            </div> 
+            <div class="inputbox" id="fixed-expenditure-search">
+                <div class = "sidevalue">고정 지출 금액 조회</div></br>
+                <label><input type="text" id = ""><button type="submit">검색</button></label>
+                <div><iframe class = "inside" src = "https://www.naver.com"></iframe></div>
+            </div> 
+            <div class="inputbox" id="fixed-expenditure-input">
+                <div class = "sidevalue">고정 지출 추가 입력</div></br>
+                <label><input type="text" id = ""><button type="submit">검색</button></label>
+                <div><iframe class = "inside" src = "https://www.naver.com"></iframe></div>
+            </div> 
+            <div class="inputbox" id="staff-list-search">
+                <div class = "sidevalue">직원 명단 조회</div></br>
+                <label><input type="text" id = ""><button type="submit">검색</button></label>
+                <div><iframe class = "inside" src = "https://www.naver.com"></iframe></div>
+            </div> 
+            <div class="inputbox" id="wating-order-search">
+                <div class = "sidevalue">발주 대기 목록 조회</div></br>
+                <label><input type="text" id = ""><button type="submit">검색</button></label>
+                <div><iframe class = "inside" src = "https://www.naver.com"></iframe></div>
+            </div> 
+            <div class="inputbox" id="sale-cost-search">
+                <div class = "sidevalue">판매 실적 조회</div></br>
+                <label><input type="text" id = ""><button type="submit">검색</button></label>
+                <div><iframe class = "inside" src = "https://www.naver.com"></iframe></div>
+            </div> 
+            <div class="inputbox" id="cs-list-search">
+                <div class = "sidevalue">CS목록 조회</div></br>
+                <label><input type="text" id = ""><button type="submit">검색</button></label>
+                <div><iframe class = "inside" src = "https://www.naver.com"></iframe></div>
+            </div> 
+        </div>
+    </section>
+    <!-- 세션관리 -->
+    <input type="hidden" id="jsonData" value="<%= JSON.stringify(data)%>" />
+    <script>
+        var stringData = document.getElementById("jsonData").getAttribute("value");
+
+        var sData = sessionStorage.getItem("sessionData");
+        if(sData == null) {
+            sessionStorage.setItem("sessionData", stringData);
+        }
+        sData = sessionStorage.getItem("sessionData");
+    </script>
+    <!-- 세션관리 -->
+</body>
+</html>

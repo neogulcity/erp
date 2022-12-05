@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <table border="1">
+        <th>물품 ID</th>
+        <th>거래처 ID</th>
+        <th>물품명</th>
+        <th>입고 수량</th>
+        <th>입고 상태 정보</th>
+        <th>입고 예정 정보</th>
+        <% data.forEach(function (elem) { %>
+            <tr>
+                <td><%= elem["물품 ID"] %></td>
+                <td><%= elem["거래처 ID"] %></td>
+                <td><%= elem["물품명"] %></td>
+                <td><%= elem["입고 수량"] %></td>
+                <td><%= elem["입고 상태 정보"] %></td>
+                <td><%= elem["입고 예정 정보"] %></td>
+            </tr>
+        <% }); %>
+    </table>
+</body>
+</html>

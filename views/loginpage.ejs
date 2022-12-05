@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel = "stylesheet" href = "css/login.css">
+</head>
+
+<body>
+    <div class="a">
+    </div> 
+    <div class="mypost" id="post-box">
+        <section class = "login-form">
+            <h1>ERP 8 LOGIN</h1>
+            <form action="/Login" method="post"accept-charset="UTF-8">
+                <div class = "int-area">
+                    <input type = "text" name = "id" id="id"
+                    autocomplete="off" required>
+                    <label for = "id">ID</label>
+                </div>
+                <div class = "int-area">
+                    <input type="password" name="pw" id="pw"
+                    autocomplete="off" required>
+                    <label for="pw">PASSWORD</label>
+                </div>
+                <div class = "btn-area">
+                    <button type="submit">LOGIN</button>
+                </div>
+            </form>
+            <div class = "caption">
+                <p>기본 ID : 사번</p>
+                <p>기본 PW : 주민등록번호 앞 6자</p>
+                <p>문의 : 320-6822</p>
+            </div>
+        </section>
+    </div>
+</body>
+<script>
+    sessionStorage.removeItem("sessionData");
+</script>
+</html>
