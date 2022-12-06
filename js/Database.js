@@ -36,7 +36,9 @@ exports.Insert = (table, data) => {
             break;
 
         case "고정 지출":
-            sql += `'${data["날짜"]}', '${data["기업유지비"]}', '${data["마케팅비"]}', '${data["인건비"]}');`;
+            let date = new Date();   
+            let today = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDay();
+            sql += `'${today}', '${data["기업유지비"]}', '${data["마케팅비"]}', '${data["인건비"]}');`;
             break;
 
         case "관리자 명단":
@@ -44,7 +46,8 @@ exports.Insert = (table, data) => {
             break;
         
         case "발주요청":
-            sql += `'${data["물품ID"]}', '${data["거래처ID"]}', '${data["수량"]}', '${data["물품도매가"]}');`;
+            sql = `INSERT INTO ${"`"}${table}${"`"} ` + "(`물품 ID`, `거래처 ID`, `물품명`, `수량`, `물품 도매가`) VALUES (";
+            sql += `'${data["물품ID"]}', '${data["거래처ID"]}', '${data["물품명"]}', '${data["수량"]}', '${data["물품도매가"]}');`;
             break;
         
         case "입고 현황":

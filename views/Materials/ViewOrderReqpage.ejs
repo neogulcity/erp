@@ -8,16 +8,30 @@
 
 <body>
     <table border="1">
+        <th>발주 ID</th>
         <th>물품 ID</th>
         <th>거래처 ID</th>
+        <th>물품명</th>
         <th>수량</th>
         <th>물품 도매가</th>
+        <th>처리 구분</th>
         <% data.forEach(function (elem) { %>
             <tr>
+                <td><%= elem["발주 ID"] %></td>
                 <td><%= elem["물품 ID"] %></td>
                 <td><%= elem["거래처 ID"] %></td>
+                <td><%= elem["물품명"] %></td>
                 <td><%= elem["수량"] %></td>
                 <td><%= elem["물품 도매가"] %></td>
+                <td>
+                    <% if (elem["처리 구분"] == -1) { %>
+                        반려
+                    <% } else if (elem["처리 구분"] == 0) { %>
+                        미처리
+                    <% } else {%>
+                        승인
+                    <% } %>
+                </td>
             </tr>
         <% }); %>
     </table>

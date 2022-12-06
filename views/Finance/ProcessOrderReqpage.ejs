@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+
+<body>
+    <table border="1">
+        <th>발주 ID</th>
+        <th>물품 ID</th>
+        <th>거래처 ID</th>
+        <th>물품명</th>
+        <th>수량</th>
+        <th>물품 도매가</th>
+        <th colspan="2">처리 구분</th>
+        <% data.forEach(function (elem) { %>
+            <% if (elem["처리 구분"] == 0) { %>            
+                <tr>
+                    <td><%= elem["발주 ID"] %></td>
+                    <td><%= elem["물품 ID"] %></td>
+                    <td><%= elem["거래처 ID"] %></td>
+                    <td><%= elem["물품명"] %></td>
+                    <td><%= elem["수량"] %></td>
+                    <td><%= elem["물품 도매가"] %></td>
+                    <form action="/OrderPermission" method="post" accept-charset="UTF-8">
+                        <input type="hidden" name="id" value="<%= elem["발주 ID"] %>">
+                        <td><button type="submit" name = "value" value="1">승인</button></td>
+                        <td><button type="submit" name = "value" value="-1">반려</button></td>
+                    </form>
+                </tr>
+            <% } %>
+        <% }); %>
+    </table>
+</body>
+</html>

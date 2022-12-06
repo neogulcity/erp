@@ -23,6 +23,9 @@
 #item-input{
     display: none;
 }
+#input-item-warehousing{
+    display: none;
+}
 #input-item-search{
     display: none;
 }

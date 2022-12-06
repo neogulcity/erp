@@ -24,3 +24,18 @@ exports.Login = (data) => {
     })
     .then((result => {return result}));
 };
+
+/**
+ * SQL Query를 통해 테이블의 튜플을 받아온다.
+ * 
+ * @param table 테이블 명
+ */
+ exports.GetViewData = (table) => {
+    return new Promise((resolve, reject) => {
+        DB.Query(`SELECT * FROM ${"`"}${table}${"`"};`)
+        .then(qResult => {
+            resolve(qResult);
+        });
+    })
+    .then((result => {return result}));
+};

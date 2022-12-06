@@ -98,6 +98,7 @@ exports.OrderRequest = (data) => {
             DB.Insert("발주요청", {
                 물품ID: data.id,
                 거래처ID: qResult[0]["거래처 ID"],
+                물품명: qResult[0]["물품명"],
                 수량: data.amount,
                 물품도매가: qResult[0]["물품 도매가"]
             })
@@ -111,37 +112,45 @@ exports.OrderRequest = (data) => {
 };
 
 /**
- * 발주 등록 (OrderRegistration)
- * 
- * DB에 발주 정보 등록.
- * 
- * @param item_id 물품 ID
- * @param corporate_id 거래처 ID
- * @param name 물품명
- * @param amount 입고 수량
- * @param status 입고 상태 정보
- * @param date 입고 예정 정보
- */
-exports.OrderRegistration = (item_id, corporate_id, name, amount, status, date) => {
-};
-
-/**
  * 입고 처리 (Warehousing)
  * 
  * 올바른 물품인지 확인, 입고 수량 체크, 신규 물품 등록 안내
  * 
- * @param id 물품 ID
- * @param amount 수량
+ * @param data.id 물품 ID
  */
-exports.Warehousing = (id, amount) => {
-    // 물품 ID, 수량 받은 후 DB에 푸시.
-};
-
-exports.GetViewData = (table) => {
+exports.Warehousing = (data) => {
+    let amount = null;
     return new Promise((resolve, reject) => {
-        DB.Query(`SELECT * FROM ${"`"}${table}${"`"};`)
+        DB.Query(`SELECT * FROM ${"`입고 현황`"} WHERE (${"`물품 ID`"} = ${data.id});`)
         .then(qResult => {
-            resolve(qResult);
+            // 물품 ID가 입고 현황 테이블에 존재하지 않음.
+            if (qResult.length == 0) {
+                resolve(0);
+                return;
+            }
+            amount = qResult[0]["입고 수량"];
+            
+            DB.Query(`SELECT * FROM ${"`전체 재고`"} WHERE (${"`물품 ID`"} = ${data.id});`)
+            .then(qResult => {
+                // 물품 ID가 전체 재고 테이블에 존재하지 않음.
+                if (qResult.length == 0) {
+                    resolve(1);
+                    return;
+                }
+                let newAllGoodsVal = qResult[0]["전체 물품 수량"] + amount;
+
+                DB.Query("UPDATE `전체 재고` SET `전체 물품 수량` = " + `${newAllGoodsVal} WHERE (` + "`물품 ID`" + ` = ${data.id});`)
+                .then(qResult => {
+                    amount += amount;
+                    DB.Query("UPDATE `전체 재고` SET `입고 수량` = " + `${amount} WHERE (` + "`물품 ID`" + ` = ${data.id});`)
+                    .then(qResult => {
+                        DB.Query("DELETE FROM `입고 현황` WHERE (`물품 ID` = " + `'${data.id}');`)
+                        .then(qResult => {
+                            resolve(2);
+                        });
+                    });
+                });
+            });
         });
     })
     .then((result => {return result}));
