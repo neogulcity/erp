@@ -137,12 +137,12 @@ exports.Warehousing = (data) => {
                     resolve(1);
                     return;
                 }
+                let newAmount = qResult[0]["입고 수량"] + amount;
                 let newAllGoodsVal = qResult[0]["전체 물품 수량"] + amount;
 
                 DB.Query("UPDATE `전체 재고` SET `전체 물품 수량` = " + `${newAllGoodsVal} WHERE (` + "`물품 ID`" + ` = ${data.id});`)
                 .then(qResult => {
-                    amount += amount;
-                    DB.Query("UPDATE `전체 재고` SET `입고 수량` = " + `${amount} WHERE (` + "`물품 ID`" + ` = ${data.id});`)
+                    DB.Query("UPDATE `전체 재고` SET `입고 수량` = " + `${newAmount} WHERE (` + "`물품 ID`" + ` = ${data.id});`)
                     .then(qResult => {
                         DB.Query("DELETE FROM `입고 현황` WHERE (`물품 ID` = " + `'${data.id}');`)
                         .then(qResult => {

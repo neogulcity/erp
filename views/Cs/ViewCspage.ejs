@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <table border="1">
+        <th>CS ID</th>
+        <th>고객 ID</th>
+        <th>건의 내용</th>
+        <% data.forEach(function (elem) { %>
+            <tr>
+                <td><%= elem["CS ID"] %></td>
+                <td><%= elem["고객 ID"] %></td>
+                <td><%= elem["건의 내용"] %></td>
+            </tr>
+        <% }); %>
+    </table>
+</body>
+</html>

@@ -65,7 +65,7 @@ const OrderRegistration = (id) => {
  exports.InputFixedCost = (data) => {
     return new Promise((resolve, reject) => {
         let date = new Date();   
-        let today = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDay();
+        let today = date.getFullYear() + '/' + (date.getMonth() + 1);
 
         DB.Query(`SELECT * FROM ${"`고정 지출`"} WHERE (${"`날짜`"} = '${today}');`)
         .then(qResult => {
@@ -85,6 +85,82 @@ const OrderRegistration = (id) => {
             });
         });
         
+    })
+    .then((result => {return result}));
+};
+
+/**
+ * 판매 실적 기록 (WriteSalesPerformance)
+ * 
+ * 판매 실적 기록
+ */
+ exports.WriteSalesPerformance = () => {
+    return new Promise((resolve, reject) => {
+        DB.Query("SELECT * FROM `전체 재고`;")
+        .then(qResult => {
+            for (var i = 0; i < qResult.length; i++) {
+                id = qResult[i]["물품 ID"];
+                income = qResult[i]["판매 수량"] * qResult[i]["물품 소매가"];
+                orderedAmount = qResult[i]["입고 수량"];
+
+                DB.Query("SELECT * FROM `거래처 물품` WHERE (`거래처 ID` = " + `'${qResult[i]["거래처 ID"]}'` + " AND `물품 ID` = " + `${qResult[i]["물품 ID"]});`)
+                .then(qResult => {
+                    spending = orderedAmount * qResult[0]["물품 도매가"];
+                    total = income - spending;
+
+                    DB.Insert("판매 실적", {
+                        물품ID: id,
+                        발주비용: spending,
+                        판매수익: income,
+                        총계: total
+                    })
+                    .then(result => {
+                    });
+                });
+            }
+            resolve(true);
+        });
+    })
+    .then((result => {return result}));
+};
+
+/**
+ * 전체 재무 DB 업데이트 (UpdateFinancialDB)
+ * 
+ * 전체 재무 DB 업데이트
+ * 
+ */
+exports.UpdateFinancialDB = () => {
+    return new Promise((resolve, reject) => {
+        DB.Query("SELECT * FROM `고정 지출`;")
+        .then(qResult => {
+            id = null;
+            fixedCost = 0;
+            for (var i = 0; i < qResult.length; i++) {
+                id = qResult[i]["날짜"];
+                fixedCost = qResult[i]["기업 유지비"] + qResult[i]["마케팅비"] + qResult[i]["인건비"];
+            }
+            DB.Query("SELECT * FROM `판매 실적`;")
+            .then(qResult => {
+                totalIncome = 0;
+                totalSpending = 0;
+                for (var i = 0; i < qResult.length; i++) {
+                    totalIncome += qResult[i]["판매 수익"];
+                    totalSpending += qResult[i]["발주 비용"];
+                }
+                totalFinance = totalIncome - totalSpending - fixedCost;
+                DB.Insert("전체 재무", {
+                    날짜: id,
+                    전체재무정보: totalFinance,
+                    판매수익: totalIncome,
+                    고정지출비용: fixedCost,
+                    발주비용: totalSpending
+                })
+                .then(result => {
+                    resolve(true);
+                });
+            });
+        });
     })
     .then((result => {return result}));
 };

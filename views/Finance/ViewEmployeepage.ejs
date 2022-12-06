@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <table border="1">
+        <th>사번</th>
+        <th>직원명</th>
+        <th>직급</th>
+        <th>월급</th>
+        <th>성과 급여</th>
+        <th>비고</th>
+        <% data.forEach(function (elem) { %>
+            <tr>
+                <td><%= elem["사번"] %></td>
+                <td><%= elem["직원명"] %></td>
+                <td><%= elem["직급"] %></td>
+                <td><%= elem["월급"] %></td>
+                <td><%= elem["성과 급여"] %></td>
+                <td><%= elem["비고"] %></td>
+            </tr>
+        <% }); %>
+    </table>
+</body>
+</html>

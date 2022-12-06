@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <table border="1">
+        <th>날짜</th>
+        <th>기업 유지비</th>
+        <th>마케팅비</th>
+        <th>인건비</th>
+        <% data.forEach(function (elem) { %>
+            <tr>
+                <td><%= elem["날짜"] %></td>
+                <td><%= elem["기업 유지비"] %></td>
+                <td><%= elem["마케팅비"] %></td>
+                <td><%= elem["인건비"] %></td>
+            </tr>
+        <% }); %>
+    </table>
+</body>
+</html>

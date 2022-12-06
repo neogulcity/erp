@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <table border="1">
+        <th>날짜</th>
+        <th>전체 재무 정보</th>
+        <th>판매 수익</th>
+        <th>고정 지출 비용</th>
+        <th>발주 비용</th>
+        <% data.forEach(function (elem) { %>
+            <tr>
+                <td><%= elem["날짜"] %></td>
+                <td><%= elem["전체 재무 정보"] %></td>
+                <td><%= elem["판매 수익"] %></td>
+                <td><%= elem["고정 지출 비용"] %></td>
+                <td><%= elem["발주 비용"] %></td>
+            </tr>
+        <% }); %>
+    </table>
+</body>
+</html>

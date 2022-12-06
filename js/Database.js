@@ -37,7 +37,7 @@ exports.Insert = (table, data) => {
 
         case "고정 지출":
             let date = new Date();   
-            let today = date.getFullYear() + '/' + (date.getMonth() + 1) + '/' + date.getDay();
+            let today = date.getFullYear() + '/' + (date.getMonth() + 1);
             sql += `'${today}', '${data["기업유지비"]}', '${data["마케팅비"]}', '${data["인건비"]}');`;
             break;
 

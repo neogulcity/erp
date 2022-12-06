@@ -208,6 +208,49 @@ const createApp = () => {
                 res.write("<script>window.location=\"/InputFixedCostpage\"</script>");
             });
         });
+
+        // 전체 재무 조회 페이지
+        app.get("/ViewAllFinancepage", function(req, res) {
+            Shared.GetViewData("전체 재무")
+            .then(result => {
+                res.render("Finance/ViewAllFinancepage", {data:result});
+            });
+        });
+
+        // 고정 지출 금액 조회 페이지
+        app.get("/ViewAllFixedCostpage", function(req, res) {
+            Shared.GetViewData("고정 지출")
+            .then(result => {
+                res.render("Finance/ViewAllFixedCostpage", {data:result});
+            });
+        });
+
+        // 직원 명단 조회 페이지
+        app.get("/ViewEmployeepage", function(req, res) {
+            Shared.GetViewData("직원 명단")
+            .then(result => {
+                res.render("Finance/ViewEmployeepage", {data:result});
+            });
+        });
+
+        // 판매 실적 조회 페이지
+        app.get("/ViewSalespage", function(req, res) {
+            Shared.GetViewData("판매 실적")
+            .then(result => {
+                res.render("Finance/ViewSalespage", {data:result});
+            });
+        });
+    }
+
+    // 고객 관리자
+    {
+        // CS 목록 조회 페이지
+        app.get("/ViewCspage", function(req, res) {
+            Shared.GetViewData("cs")
+            .then(result => {
+                res.render("Cs/ViewCspage", {data:result});
+            });
+        });
     }
 
     // 로그인 모듈
