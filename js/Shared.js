@@ -30,10 +30,124 @@ exports.Login = (data) => {
  * 
  * @param table 테이블 명
  */
- exports.GetViewData = (table) => {
+exports.GetViewData = (table) => {
     return new Promise((resolve, reject) => {
         DB.Query(`SELECT * FROM ${"`"}${table}${"`"};`)
         .then(qResult => {
+            resolve(qResult);
+        });
+    })
+    .then((result => {return result}));
+};
+
+/**
+ * SQL Query를 통해 테이블별 데이터를 검색한다.
+ * 
+ * @param data.table 테이블 명
+ * @param data.target 찾을 데이터 명
+ */
+exports.Search = (data) => {
+    return new Promise((resolve, reject) => {
+        let sql = null;
+        switch (data.table) {
+        case "전체 재고":
+            sql = `SELECT * FROM ${"`"}${data.table}${"`"} `;
+            sql += "WHERE (`물품 ID` = ";
+            sql += `'${data.target}'`;
+            sql += " OR `거래처 ID` = ";
+            sql += `'${data.target}'`;
+            sql += " OR `물품명` = ";
+            sql += `'${data.target}'`;
+            sql += ");"
+            break;
+        
+        case "거래처 물품":
+            sql = `SELECT * FROM ${"`"}${data.table}${"`"} `;
+            sql += "WHERE (`거래처 ID` = ";
+            sql += `'${data.target}'`;
+            sql += " OR `물품 ID` = ";
+            sql += `'${data.target}'`;
+            sql += " OR `물품명` = ";
+            sql += `'${data.target}'`;
+            sql += ");"
+            break;
+
+        case "거래처":
+            sql = `SELECT * FROM ${"`"}${data.table}${"`"} `;
+            sql += "WHERE (`거래처 ID` = ";
+            sql += `'${data.target}'`;
+            sql += " OR `거래처 명` = ";
+            sql += `'${data.target}'`;
+            sql += ");"
+            break;
+
+        case "발주요청":
+            sql = `SELECT * FROM ${"`"}${data.table}${"`"} `;
+            sql += "WHERE (`발주 ID` = ";
+            sql += `'${data.target}'`;
+            sql += " OR `물품 ID` = ";
+            sql += `'${data.target}'`;
+            sql += " OR `거래처 ID` = ";
+            sql += `'${data.target}'`;
+            sql += " OR `물품명` = ";
+            sql += `'${data.target}'`;
+            sql += ");"
+            break;
+
+        case "입고 현황":
+            sql = `SELECT * FROM ${"`"}${data.table}${"`"} `;
+            sql += "WHERE (`물품 ID` = ";
+            sql += `'${data.target}'`;
+            sql += " OR `거래처 ID` = ";
+            sql += `'${data.target}'`;
+            sql += " OR `물품명` = ";
+            sql += `'${data.target}'`;
+            sql += ");"
+            break;
+
+        case "전체 재무":
+        case "고정 지출":
+            sql = `SELECT * FROM ${"`"}${data.table}${"`"} `;
+            sql += "WHERE (`날짜` = ";
+            sql += `'${data.target}'`;
+            sql += ");"
+            break;
+
+        case "직원 명단":
+            sql = `SELECT * FROM ${"`"}${data.table}${"`"} `;
+            sql += "WHERE (`사번` = ";
+            sql += `'${data.target}'`;
+            sql += " OR `직원명` = ";
+            sql += `'${data.target}'`;
+            sql += " OR `직급` = ";
+            sql += `'${data.target}'`;
+            sql += ");"
+            break;
+
+        case "판매 실적":
+            sql = `SELECT * FROM ${"`"}${data.table}${"`"} `;
+            sql += "WHERE (`물품 ID` = ";
+            sql += `'${data.target}'`;
+            sql += ");"
+            break;
+
+        case "cs":
+            sql = `SELECT * FROM ${"`"}${data.table}${"`"} `;
+            sql += "WHERE (`CS ID` = ";
+            sql += `'${data.target}'`;
+            sql += " OR `고객 ID` = ";
+            sql += `'${data.target}'`;
+            sql += ");"
+            break;
+        }
+
+        DB.Query(sql)
+        .then(qResult => {
+            if (qResult.length == 0) {
+                resolve("false");
+                return;
+            }
+
             resolve(qResult);
         });
     })

@@ -21,5 +21,22 @@
             </tr>
         <% }); %>
     </table>
+    <script>
+        window.addEventListener('message', ReceiveMsg);
+
+        function ReceiveMsg(msg) {
+            let form = document.createElement('form');
+            form.action = '/Search';
+            form.method = 'POST';
+            form.acceptCharset = "UTF-8";
+
+            let textData = '<input type="hidden" name="page" value="ViewCorpGoodspage">';
+            textData += '<input type="hidden" name="table" value="거래처 물품">';
+            textData += '<input type="hidden" name="target" value=' + msg.data + '>';
+            form.innerHTML = textData;
+            document.body.append(form);
+            form.submit();
+        }
+    </script>
 </body>
 </html>

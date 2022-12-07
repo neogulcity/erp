@@ -57,6 +57,15 @@ const createApp = () => {
 
         // 전체 재고 조회 페이지
         app.get("/ViewAllGoodspage", function(req, res) {
+            let searchInfo = req.flash('searchInfo');
+            if (searchInfo == "false") {
+                res.render("Materials/ViewAllGoodspage", {data:[]});
+                return;
+            } else if (JSON.stringify(searchInfo) != "[]") {
+                res.render("Materials/ViewAllGoodspage", {data:searchInfo});
+                return;
+            }
+            
             Shared.GetViewData("전체 재고")
             .then(result => {
                 res.render("Materials/ViewAllGoodspage", {data:result});
@@ -65,6 +74,15 @@ const createApp = () => {
 
         // 거래처 조회 페이지
         app.get("/ViewCorppage", function(req, res) {
+            let searchInfo = req.flash('searchInfo');
+            if (searchInfo == "false") {
+                res.render("Materials/ViewCorppage", {data:[]});
+                return;
+            } else if (JSON.stringify(searchInfo) != "[]") {
+                res.render("Materials/ViewCorppage", {data:searchInfo});
+                return;
+            }
+            
             Shared.GetViewData("거래처")
             .then(result => {
                 res.render("Materials/ViewCorppage", {data:result});
@@ -73,6 +91,15 @@ const createApp = () => {
 
         // 거래처 물품 조회 페이지
         app.get("/ViewCorpGoodspage", function(req, res) {
+            let searchInfo = req.flash('searchInfo');
+            if (searchInfo == "false") {
+                res.render("Materials/ViewCorpGoodspage", {data:[]});
+                return;
+            } else if (JSON.stringify(searchInfo) != "[]") {
+                res.render("Materials/ViewCorpGoodspage", {data:searchInfo});
+                return;
+            }
+
             Shared.GetViewData("거래처 물품")
             .then(result => {
                 res.render("Materials/ViewCorpGoodspage", {data:result});
@@ -81,6 +108,15 @@ const createApp = () => {
 
         // 입고 현황 조회 페이지
         app.get("/ViewWarehousingpage", function(req, res) {
+            let searchInfo = req.flash('searchInfo');
+            if (searchInfo == "false") {
+                res.render("Materials/ViewWarehousingpage", {data:[]});
+                return;
+            } else if (JSON.stringify(searchInfo) != "[]") {
+                res.render("Materials/ViewWarehousingpage", {data:searchInfo});
+                return;
+            }
+
             Shared.GetViewData("입고 현황")
             .then(result => {
                 res.render("Materials/ViewWarehousingpage", {data:result});
@@ -89,6 +125,15 @@ const createApp = () => {
 
         // 발주 요청 조회 페이지
         app.get("/ViewOrderReqpage", function(req, res) {
+            let searchInfo = req.flash('searchInfo');
+            if (searchInfo == "false") {
+                res.render("Materials/ViewOrderReqpage", {data:[]});
+                return;
+            } else if (JSON.stringify(searchInfo) != "[]") {
+                res.render("Materials/ViewOrderReqpage", {data:searchInfo});
+                return;
+            }
+
             Shared.GetViewData("발주요청")
             .then(result => {
                 res.render("Materials/ViewOrderReqpage", {data:result});
@@ -172,6 +217,15 @@ const createApp = () => {
     {
         // 발주 요청 목록 조회 페이지
         app.get("/ProcessOrderReqpage", function(req, res) {
+            let searchInfo = req.flash('searchInfo');
+            if (searchInfo == "false") {
+                res.render("Finance/ProcessOrderReqpage", {data:[]});
+                return;
+            } else if (JSON.stringify(searchInfo) != "[]") {
+                res.render("Finance/ProcessOrderReqpage", {data:searchInfo});
+                return;
+            }
+
             Shared.GetViewData("발주요청")
             .then(result => {
                 res.render("Finance/ProcessOrderReqpage", {data:result});
@@ -211,6 +265,15 @@ const createApp = () => {
 
         // 전체 재무 조회 페이지
         app.get("/ViewAllFinancepage", function(req, res) {
+            let searchInfo = req.flash('searchInfo');
+            if (searchInfo == "false") {
+                res.render("Finance/ViewAllFinancepage", {data:[]});
+                return;
+            } else if (JSON.stringify(searchInfo) != "[]") {
+                res.render("Finance/ViewAllFinancepage", {data:searchInfo});
+                return;
+            }
+
             Shared.GetViewData("전체 재무")
             .then(result => {
                 res.render("Finance/ViewAllFinancepage", {data:result});
@@ -219,6 +282,15 @@ const createApp = () => {
 
         // 고정 지출 금액 조회 페이지
         app.get("/ViewAllFixedCostpage", function(req, res) {
+            let searchInfo = req.flash('searchInfo');
+            if (searchInfo == "false") {
+                res.render("Finance/ViewAllFixedCostpage", {data:[]});
+                return;
+            } else if (JSON.stringify(searchInfo) != "[]") {
+                res.render("Finance/ViewAllFixedCostpage", {data:searchInfo});
+                return;
+            }
+
             Shared.GetViewData("고정 지출")
             .then(result => {
                 res.render("Finance/ViewAllFixedCostpage", {data:result});
@@ -227,6 +299,15 @@ const createApp = () => {
 
         // 직원 명단 조회 페이지
         app.get("/ViewEmployeepage", function(req, res) {
+            let searchInfo = req.flash('searchInfo');
+            if (searchInfo == "false") {
+                res.render("Finance/ViewEmployeepage", {data:[]});
+                return;
+            } else if (JSON.stringify(searchInfo) != "[]") {
+                res.render("Finance/ViewEmployeepage", {data:searchInfo});
+                return;
+            }
+
             Shared.GetViewData("직원 명단")
             .then(result => {
                 res.render("Finance/ViewEmployeepage", {data:result});
@@ -235,6 +316,15 @@ const createApp = () => {
 
         // 판매 실적 조회 페이지
         app.get("/ViewSalespage", function(req, res) {
+            let searchInfo = req.flash('searchInfo');
+            if (searchInfo == "false") {
+                res.render("Finance/ViewSalespage", {data:[]});
+                return;
+            } else if (JSON.stringify(searchInfo) != "[]") {
+                res.render("Finance/ViewSalespage", {data:searchInfo});
+                return;
+            }
+
             Shared.GetViewData("판매 실적")
             .then(result => {
                 res.render("Finance/ViewSalespage", {data:result});
@@ -246,6 +336,15 @@ const createApp = () => {
     {
         // CS 목록 조회 페이지
         app.get("/ViewCspage", function(req, res) {
+            let searchInfo = req.flash('searchInfo');
+            if (searchInfo == "false") {
+                res.render("Cs/ViewCspage", {data:[]});
+                return;
+            } else if (JSON.stringify(searchInfo) != "[]") {
+                res.render("Cs/ViewCspage", {data:searchInfo});
+                return;
+            }
+
             Shared.GetViewData("cs")
             .then(result => {
                 res.render("Cs/ViewCspage", {data:result});
@@ -265,6 +364,15 @@ const createApp = () => {
                 req.flash('loginInfo', result);
                 res.redirect('/Main');
             }
+        });
+    });
+
+    // 검색 모듈
+    app.post('/Search', function(req, res) {
+        Shared.Search(req.body)
+        .then(result => {
+            req.flash('searchInfo', result);
+            res.redirect('/' + req.body.page);
         });
     });
 
