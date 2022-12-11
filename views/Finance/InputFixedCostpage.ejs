@@ -4,25 +4,46 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+    <link rel = "stylesheet" href = "css/iframe.css">
 </head>
 
 <body>
-    <form action="/InputFixedCost" method="post"accept-charset="UTF-8">
-        <div class = "int-area">
-            <input type = "text" name = "upkeep" id = "upkeep" autocomplete = "off">
-            기업 유지비
-        </div>
-        <div class = "int-area">
-            <input type = "text" name = "marketing" id = "marketing" autocomplete="off">
-            마케팅비
-        </div>
-        <div class = "int-area">
-            <input type = "text" name = "laborcost" id = "laborcost" autocomplete = "off">
-            인건비
-        </div>
-        <div class = "btn-area">
-            <button type="submit">등록</button>
-        </div>
-    </form>
+    <div class ="input-tabel">
+        <table>
+            <tr>
+                <td class = "input-head">기업 유지비</td>
+                <td><label class = "input_action"><input type="text" name = "upkeep" id = "upkeep"><br></label></td>
+            </tr>
+            <tr>
+                <td class = "input-head">마케팅비</td>
+                <td><label class = "input_action"><input type="text" name = "marketing" id = "marketing"><br></label></td>
+            </tr>
+            <tr>
+                <td class = "input-head">인건비</td>
+                <td><label class = "input_action"><input type="text" name = "laborcost" id = "laborcost"><br></label></td>
+            </tr>
+        </table>
+        <label class = "input_action"><button class="inputbtn" type="submit" onclick='Send()'>전송하기</button></label>
+    </div>
 </body>
+<script>
+    const Send = () => {
+        let upkeep = document.getElementById("upkeep").value;
+        let marketing = document.getElementById("marketing").value;
+        let laborcost = document.getElementById("laborcost").value;
+
+        let form = document.createElement('form');
+        form.action = '/InputFixedCost';
+        form.method = 'POST';
+        form.acceptCharset = "UTF-8";
+
+        let textData = '<input type="hidden" name="upkeep" value="' + upkeep + '">';
+        textData += '<input type="hidden" name="marketing" value="' + marketing + '">';
+        textData += '<input type="hidden" name="laborcost" value="' + laborcost + '">';
+        
+        form.innerHTML = textData;
+        document.body.append(form);
+        form.submit();
+    }
+</script>
 </html>

@@ -4,26 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+    <link rel = "stylesheet" href = "css/iframe.css">
 </head>
 
 <body>
-    <table border="1">
-        <th>사번</th>
-        <th>직원명</th>
-        <th>직급</th>
-        <th>월급</th>
-        <th>성과 급여</th>
-        <th>비고</th>
-        <% data.forEach(function (elem) { %>
+    <table class ="">
+        <thead>
             <tr>
-                <td><%= elem["사번"] %></td>
-                <td><%= elem["직원명"] %></td>
-                <td><%= elem["직급"] %></td>
-                <td><%= elem["월급"] %></td>
-                <td><%= elem["성과 급여"] %></td>
-                <td><%= elem["비고"] %></td>
+                <th class="cols">사번</th>
+                <th class="cols">직원명</th>
+                <th class="cols">직급</th>
+                <th class="cols">월급</th>
+                <th class="cols">성과 급여</th>
+                <th class="cols">비고</th>
             </tr>
-        <% }); %>
+        </thead>
+        <tbody id = "loop-employ-list">
+            <% data.forEach(function (elem) { %>
+                <tr>
+                    <td class = "cell"><%= elem["사번"] %></td>
+                    <td class = "cell"><%= elem["직원명"] %></td>
+                    <td class = "cell"><%= elem["직급"] %></td>
+                    <td class = "cell money"><%= elem["월급"] %></td>
+                    <td class = "cell money"><%= elem["성과 급여"] %></td>
+                    <td class = "cell"><%= elem["비고"] %></td>
+                </tr>
+            <% }); %>
+        </tbody>
     </table>
     <script>
         window.addEventListener('message', ReceiveMsg);
@@ -40,6 +47,13 @@
             form.innerHTML = textData;
             document.body.append(form);
             form.submit();
+        }
+
+        var length = document.getElementsByClassName('money').length;
+        for (var i = 0; i < length; i++) {
+            var money = $('.money').eq(i).text();
+            var money2 = money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            $('.money').eq(i).text(money2);
         }
     </script>
 </body>

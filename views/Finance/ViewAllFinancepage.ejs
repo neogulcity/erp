@@ -4,24 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+    <link rel = "stylesheet" href = "css/iframe.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
-    <table border="1">
-        <th>날짜</th>
-        <th>전체 재무 정보</th>
-        <th>판매 수익</th>
-        <th>고정 지출 비용</th>
-        <th>발주 비용</th>
-        <% data.forEach(function (elem) { %>
+    <table class ="">
+        <thead>
             <tr>
-                <td><%= elem["날짜"] %></td>
-                <td><%= elem["전체 재무 정보"] %></td>
-                <td><%= elem["판매 수익"] %></td>
-                <td><%= elem["고정 지출 비용"] %></td>
-                <td><%= elem["발주 비용"] %></td>
+                <th class="cols">날짜</th>
+                <th class="cols">전체 재무 정보</th>
+                <th class="cols">판매 수익</th>
+                <th class="cols">고정 지출 비용</th>
+                <th class="cols">발주 비용</th>
             </tr>
-        <% }); %>
+        </thead>
+        <tbody id = "loop-ALLJEMU-list">
+            <% data.forEach(function (elem) { %>
+                <tr>
+                    <td class = "cell"><%= elem["날짜"] %></td>
+                    <td class = "cell money"><%= elem["전체 재무 정보"] %></td>
+                    <td class = "cell money"><%= elem["판매 수익"] %></td>
+                    <td class = "cell money"><%= elem["고정 지출 비용"] %></td>
+                    <td class = "cell money"><%= elem["발주 비용"] %></td>
+                </tr>
+            <% }); %>
+        </tbody>
     </table>
     <script>
         window.addEventListener('message', ReceiveMsg);
@@ -38,6 +46,13 @@
             form.innerHTML = textData;
             document.body.append(form);
             form.submit();
+        }
+
+        var length = document.getElementsByClassName('money').length;
+        for (var i = 0; i < length; i++) {
+            var money = $('.money').eq(i).text();
+            var money2 = money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            $('.money').eq(i).text(money2);
         }
     </script>
 </body>

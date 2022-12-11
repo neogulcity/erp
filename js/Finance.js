@@ -17,7 +17,7 @@ const DB = require("./Database");
                 return;
             }
             
-            OrderRegistration(data.id)
+            this.OrderRegistration(data.id)
             .then(result => {
                 resolve(true);
             });
@@ -33,7 +33,7 @@ const DB = require("./Database");
  * 
  * @param id 발주 ID
  */
-const OrderRegistration = (id) => {
+exports.OrderRegistration = (id) => {
     return new Promise((resolve, reject) => {
         DB.Query("SELECT * FROM `발주요청` WHERE (`발주 ID` = " + `${id});`)
         .then(qResult => {
@@ -69,9 +69,21 @@ const OrderRegistration = (id) => {
 
         DB.Query(`SELECT * FROM ${"`고정 지출`"} WHERE (${"`날짜`"} = '${today}');`)
         .then(qResult => {
-            // 날짜가 고정 지출 테이블에 존재하지 않음.
-            if (qResult.length != 0) {
+            // 고정 지출비가 숫자가 아닐때
+            if (isNaN(data.upkeep) || isNaN(data.marketing) || isNaN(data.laborcost)) {
                 resolve(0);
+                return;
+            }
+
+            // 고정 지출비가 입력되지 않았을 때
+            if (data.upkeep.length == 0 || data.marketing.length == 0 || data.laborcost.length == 0) {
+                resolve(0);
+                return;
+            }
+
+            // 금일 고정 지출 내용이 이미 등록되어 있음.
+            if (qResult.length != 0) {
+                resolve(1);
                 return;
             }
 
@@ -81,13 +93,63 @@ const OrderRegistration = (id) => {
                 인건비: data.laborcost
             })
             .then(result => {
-                resolve(1);
+                resolve(2);
             });
         });
         
     })
     .then((result => {return result}));
 };
+
+const func1 = (qResult, length) => {
+    return new Promise((resolve, reject) => {
+        for (var i = 0; i < length; i++) {
+            func2(qResult, i);
+        }
+        resolve(true);
+    })
+    .then((result => {return result}));
+}
+
+const func2 = (qResult, i) => {
+    return new Promise((resolve, reject) => {
+        let id = qResult[i]["물품 ID"];
+        let income = qResult[i]["판매 수량"] * qResult[i]["물품 소매가"];
+        let orderedAmount = qResult[i]["입고 수량"];
+
+        DB.Query("SELECT * FROM `거래처 물품` WHERE (`거래처 ID` = " + `'${qResult[i]["거래처 ID"]}'` + " AND `물품 ID` = " + `${qResult[i]["물품 ID"]});`)
+        .then(qResult => {
+            let spending = orderedAmount * qResult[0]["물품 도매가"];
+            let total = income - spending;
+            
+            // 판매 실적 테이블의 데이터 유무 확인.
+            DB.Query("SELECT * FROM `판매 실적` WHERE (`물품 ID` = " + `'${id}');`)
+            .then(qResult => {
+                // 판매 실적 테이블에 데이터가 없을 경우
+                if (qResult.length == 0) {
+                    DB.Insert("판매 실적", {
+                        물품ID: id,
+                        발주비용: spending,
+                        판매수익: income,
+                        총계: total
+                    })
+                    .then(result => {
+                        resolve(true);
+                    });
+                }
+
+                // 판매 실적 테이블에 데이터가 있을 경우
+                else {
+                    DB.Query("UPDATE `판매 실적` SET `발주 비용` = " + `'${spending}'` + ", `판매 수익` = " + `'${income}'` + ", `총계` = " + `'${total}'` + ` WHERE (` + "`물품 ID`" + ` = '${id}');`)
+                    .then(qResult => {
+                        resolve(true);
+                    });
+                }
+            });
+        });
+    })
+    .then((result => {return result}));
+}
 
 /**
  * 판매 실적 기록 (WriteSalesPerformance)
@@ -98,27 +160,58 @@ const OrderRegistration = (id) => {
     return new Promise((resolve, reject) => {
         DB.Query("SELECT * FROM `전체 재고`;")
         .then(qResult => {
-            for (var i = 0; i < qResult.length; i++) {
-                id = qResult[i]["물품 ID"];
-                income = qResult[i]["판매 수량"] * qResult[i]["물품 소매가"];
-                orderedAmount = qResult[i]["입고 수량"];
-
-                DB.Query("SELECT * FROM `거래처 물품` WHERE (`거래처 ID` = " + `'${qResult[i]["거래처 ID"]}'` + " AND `물품 ID` = " + `${qResult[i]["물품 ID"]});`)
-                .then(qResult => {
-                    spending = orderedAmount * qResult[0]["물품 도매가"];
-                    total = income - spending;
-
-                    DB.Insert("판매 실적", {
-                        물품ID: id,
-                        발주비용: spending,
-                        판매수익: income,
-                        총계: total
-                    })
-                    .then(result => {
-                    });
-                });
+            if (qResult.length == 0) {
+                resolve(true);
+                return;
             }
-            resolve(true);
+
+            func1(qResult, qResult.length)
+            .then(result => {
+                resolve(true);
+            });
+            // for (var i = 0; i < qResult.length; i++) {
+            //     count = qResult.length - 1;
+            //     id = qResult[i]["물품 ID"];
+            //     income = qResult[i]["판매 수량"] * qResult[i]["물품 소매가"];
+            //     orderedAmount = qResult[i]["입고 수량"];
+
+            //     DB.Query("SELECT * FROM `거래처 물품` WHERE (`거래처 ID` = " + `'${qResult[i]["거래처 ID"]}'` + " AND `물품 ID` = " + `${qResult[i]["물품 ID"]});`)
+            //     .then(qResult => {
+            //         spending = orderedAmount * qResult[0]["물품 도매가"];
+            //         total = income - spending;
+                    
+            //         // 판매 실적 테이블의 데이터 유무 확인.
+            //         DB.Query("SELECT * FROM `판매 실적` WHERE (`물품 ID` = " + `'${id}');`)
+            //         .then(qResult => {
+            //             // 판매 실적 테이블에 데이터가 없을 경우
+            //             if (qResult.length == 0) {
+            //                 DB.Insert("판매 실적", {
+            //                     물품ID: id,
+            //                     발주비용: spending,
+            //                     판매수익: income,
+            //                     총계: total
+            //                 })
+            //                 .then(result => {
+            //                     if (i == count) {
+            //                         resolve(true);
+            //                         return;
+            //                     }
+            //                 });
+            //             }
+
+            //             // 판매 실적 테이블에 데이터가 있을 경우
+            //             else {
+            //                 DB.Query("UPDATE `판매 실적` SET `발주 비용` = " + `'${spending}'` + ", `판매 수익` = " + `'${income}'` + ", `총계` = " + `'${total}'` + ` WHERE (` + "`물품 ID`" + ` = '${id}');`)
+            //                 .then(qResult => {
+            //                     if (i == count) {
+            //                         resolve(true);
+            //                         return;
+            //                     }
+            //                 });
+            //             }
+            //         });
+            //     });
+            // }
         });
     })
     .then((result => {return result}));
@@ -134,30 +227,46 @@ exports.UpdateFinancialDB = () => {
     return new Promise((resolve, reject) => {
         DB.Query("SELECT * FROM `고정 지출`;")
         .then(qResult => {
-            id = null;
-            fixedCost = 0;
+            let id = null;
+            let fixedCost = 0;
             for (var i = 0; i < qResult.length; i++) {
                 id = qResult[i]["날짜"];
                 fixedCost = qResult[i]["기업 유지비"] + qResult[i]["마케팅비"] + qResult[i]["인건비"];
             }
             DB.Query("SELECT * FROM `판매 실적`;")
             .then(qResult => {
-                totalIncome = 0;
-                totalSpending = 0;
+                let totalIncome = 0;
+                let totalSpending = 0;
                 for (var i = 0; i < qResult.length; i++) {
                     totalIncome += qResult[i]["판매 수익"];
                     totalSpending += qResult[i]["발주 비용"];
                 }
-                totalFinance = totalIncome - totalSpending - fixedCost;
-                DB.Insert("전체 재무", {
-                    날짜: id,
-                    전체재무정보: totalFinance,
-                    판매수익: totalIncome,
-                    고정지출비용: fixedCost,
-                    발주비용: totalSpending
-                })
-                .then(result => {
-                    resolve(true);
+                let totalFinance = totalIncome - totalSpending - fixedCost;
+
+                // 전체 재무 테이블의 데이터 유무 확인.
+                DB.Query("SELECT * FROM `전체 재무` WHERE (`날짜` = " + `'${id}');`)
+                .then(qResult => {
+                    // 전체 재무 테이블에 데이터가 없을 경우
+                    if (qResult.length == 0) {
+                        DB.Insert("전체 재무", {
+                            날짜: id,
+                            전체재무정보: totalFinance,
+                            판매수익: totalIncome,
+                            고정지출비용: fixedCost,
+                            발주비용: totalSpending
+                        })
+                        .then(result => {
+                            resolve(true);
+                        });
+                    }
+
+                    // 전체 재무 테이블에 데이터가 있을 경우
+                    else {
+                        DB.Query("UPDATE `전체 재무` SET `전체 재무 정보` = " + `'${totalFinance}'` + ", `판매 수익` = " + `'${totalIncome}'` + ", `고정 지출 비용` = " + `'${fixedCost}'` + ", `발주 비용` = " + `'${totalSpending}'` + ` WHERE (` + "`날짜`" + ` = '${id}');`)
+                        .then(qResult => {
+                            resolve(true);
+                        });
+                    }
                 });
             });
         });

@@ -4,18 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+    <link rel = "stylesheet" href = "css/iframe.css">
 </head>
 
 <body>
-    <form action="/Warehousing" method="post"accept-charset="UTF-8">
-        <div class = "int-area">
-            <input type = "text" name = "id" id = "id"
-            autocomplete="off">
-            <label for = "id">물품 ID</label>
-        </div>
-        <div class = "btn-area">
-            <button type="submit">확인</button>
-        </div>
-    </form>
+    <div class ="input-tabel">
+        <table>
+            <tr>
+                <td class = "input-head">물품 ID</td>
+                <td><label class = "input_action"><input type="text" name = "id" id = "id"><br></label></td>
+            </tr>
+        </table>
+        <label class = "input_action"><button class="inputbtn" type="submit" onclick='Send()'>전송하기</button></label>
+    </div>
 </body>
+<script>
+    const Send = () => {
+        let id = document.getElementById("id").value;
+
+        let form = document.createElement('form');
+        form.action = '/Warehousing';
+        form.method = 'POST';
+        form.acceptCharset = "UTF-8";
+
+        let textData = '<input type="hidden" name="id" value="' + id + '">';
+
+        form.innerHTML = textData;
+        document.body.append(form);
+        form.submit();
+    }
+</script>
 </html>

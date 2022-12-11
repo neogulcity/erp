@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "NODE_ENV=development DOTENV_CONFIG_PATH=.test.env jest --setupFiles=dotenv/config --runInBand"
+    "test": "NODE_ENV=development DOTENV_CONFIG_PATH=.test.env jest --setupFiles=dotenv/config --runInBand --verbose"
   },
   "dependencies": {
     "body-parser": "^1.20.1",

@@ -145,7 +145,15 @@ const createApp = () => {
             Materials.CorporateRegistration(req.body)
             .then(result => {
                 res.writeHead(200, {'Content-Type': 'text/html;charset=UTF-8'});
-                res.write("<script>alert('등록되었습니다.')</script>");
+                switch (result) {
+                case 0:
+                    res.write("<script>alert('다시 입력해 주세요.')</script>");
+                    break;
+
+                case 1:
+                    res.write("<script>alert('등록되었습니다.')</script>");
+                    break;
+                }
                 res.write("<script>window.location=\"/CorpRegipage\"</script>");
             });
         });
@@ -252,10 +260,14 @@ const createApp = () => {
                 res.writeHead(200, {'Content-Type': 'text/html;charset=UTF-8'});
                 switch (result) {
                 case 0:
+                    res.write("<script>alert('다시 입력해 주세요.')</script>");
+                    break;
+
+                case 1:
                     res.write("<script>alert('이미 등록되었습니다.')</script>");
                     break;
                 
-                case 1:
+                case 2:
                     res.write("<script>alert('등록되었습니다.')</script>");
                     break;
                 }
@@ -265,18 +277,21 @@ const createApp = () => {
 
         // 전체 재무 조회 페이지
         app.get("/ViewAllFinancepage", function(req, res) {
-            let searchInfo = req.flash('searchInfo');
-            if (searchInfo == "false") {
-                res.render("Finance/ViewAllFinancepage", {data:[]});
-                return;
-            } else if (JSON.stringify(searchInfo) != "[]") {
-                res.render("Finance/ViewAllFinancepage", {data:searchInfo});
-                return;
-            }
-
-            Shared.GetViewData("전체 재무")
+            Finance.UpdateFinancialDB()
             .then(result => {
-                res.render("Finance/ViewAllFinancepage", {data:result});
+                let searchInfo = req.flash('searchInfo');
+                if (searchInfo == "false") {
+                    res.render("Finance/ViewAllFinancepage", {data:[]});
+                    return;
+                } else if (JSON.stringify(searchInfo) != "[]") {
+                    res.render("Finance/ViewAllFinancepage", {data:searchInfo});
+                    return;
+                }
+
+                Shared.GetViewData("전체 재무")
+                .then(result => {
+                    res.render("Finance/ViewAllFinancepage", {data:result});
+                });
             });
         });
 
@@ -316,18 +331,21 @@ const createApp = () => {
 
         // 판매 실적 조회 페이지
         app.get("/ViewSalespage", function(req, res) {
-            let searchInfo = req.flash('searchInfo');
-            if (searchInfo == "false") {
-                res.render("Finance/ViewSalespage", {data:[]});
-                return;
-            } else if (JSON.stringify(searchInfo) != "[]") {
-                res.render("Finance/ViewSalespage", {data:searchInfo});
-                return;
-            }
-
-            Shared.GetViewData("판매 실적")
+            Finance.WriteSalesPerformance()
             .then(result => {
-                res.render("Finance/ViewSalespage", {data:result});
+                let searchInfo = req.flash('searchInfo');
+                if (searchInfo == "false") {
+                    res.render("Finance/ViewSalespage", {data:[]});
+                    return;
+                } else if (JSON.stringify(searchInfo) != "[]") {
+                    res.render("Finance/ViewSalespage", {data:searchInfo});
+                    return;
+                }
+
+                Shared.GetViewData("판매 실적")
+                .then(result => {
+                    res.render("Finance/ViewSalespage", {data:result});
+                });
             });
         });
     }
@@ -357,7 +375,7 @@ const createApp = () => {
         Shared.Login(req.body)
         .then(result => {
             if (result == null) {
-                res.writeHead(200, {'Content-Type': 'text/html;charset=UTF-8'});
+                res.writeHead(302, {'Content-Type': 'text/html;charset=UTF-8'});
                 res.write("<script>alert('다시 입력해 주세요.')</script>");
                 res.write("<script>window.location=\"/\"</script>");
             } else {

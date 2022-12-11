@@ -112,14 +112,17 @@ exports.Query = (sql) => {
 
 
 /**
- * DB 존재하는 모든 데이터 삭제. (WIP)
+ * DB 존재하는 모든 데이터 삭제.
  */
 exports.ClearAll = () => {
     return new Promise((resolve, reject) => {
+        const connection = mysql.createConnection(dbconfig);
+        connection.connect();
+
         let sql = {
             0: "SET FOREIGN_KEY_CHECKS = 0;",
             1: "TRUNCATE `cs`;",
-            // 2: "TRUNCATE `거래처`;",
+            2: "TRUNCATE `거래처`;",
             3: "TRUNCATE `거래처 물품`;",
             4: "TRUNCATE `고정 지출`;",
             5: "TRUNCATE `관리자 명단`;",
@@ -131,13 +134,60 @@ exports.ClearAll = () => {
             11: "TRUNCATE `판매 실적`;",
             12: "SET FOREIGN_KEY_CHECKS = 1;"
         };
-        let DoClear = async () => {
-            for (let elem in sql) {
-                await this.Query(sql[elem]);
+        
+        DoClear(connection, sql[0])
+        .then(() => {
+            DoClear(connection, sql[1])
+            .then(() => {
+                DoClear(connection, sql[2])
+                .then(() => {
+                    DoClear(connection, sql[3])
+                    .then(() => {
+                        DoClear(connection, sql[4])
+                        .then(() => {
+                            DoClear(connection, sql[5])
+                            .then(() => {
+                                DoClear(connection, sql[6])
+                                .then(() => {
+                                    DoClear(connection, sql[7])
+                                    .then(() => {
+                                        DoClear(connection, sql[8])
+                                        .then(() => {
+                                            DoClear(connection, sql[9])
+                                            .then(() => {
+                                                DoClear(connection, sql[10])
+                                                .then(() => {
+                                                    DoClear(connection, sql[11])
+                                                    .then(() => {
+                                                        DoClear(connection, sql[12])
+                                                        .then(() => {
+                                                            connection.end();
+                                                            resolve(true);
+                                                        });
+                                                    });
+                                                });
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    })
+    .then((result => {return result}));
+}
+
+const DoClear = (connection, sql) => {
+    return new Promise((resolve, reject) => {
+        connection.query(sql, function(err, results, fields) {
+            if(err) {
+                console.log(err);
             }
             resolve(true);
-        };
-        DoClear();
+        });
     })
     .then((result => {return result}));
 }

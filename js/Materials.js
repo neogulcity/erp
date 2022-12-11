@@ -10,12 +10,17 @@ const DB = require("./Database");
  */
 exports.CorporateRegistration = (data) => {
     return new Promise((resolve, reject) => {
+        if (data.id.length != 6) {
+            resolve(0);
+            return;
+        }
+
         DB.Insert("거래처", {
             거래처ID: data.id,
             거래처명: data.name
         })
         .then(result => {
-            resolve(true);
+            resolve(1);
         });
     })
     .then((result => {return result}));
@@ -34,7 +39,7 @@ exports.CorporateRegistration = (data) => {
  */
 exports.GoodsRegistration = (data) => {
     return new Promise((resolve, reject) => {
-        DB.Query(`SELECT COUNT(*) FROM ${"`거래처`"} WHERE (${"`거래처 ID`"} = ${data.corpid});`)
+        DB.Query(`SELECT COUNT(*) FROM ${"`거래처`"} WHERE (${"`거래처 ID`"} = '${data.corpid}');`)
         .then(qResult => {
             // 거래처 ID가 거래처 테이블에 존재하지 않음.
             if (qResult[0]["COUNT(*)"] != 1) {
@@ -87,7 +92,7 @@ exports.GoodsRegistration = (data) => {
  */
 exports.OrderRequest = (data) => {
     return new Promise((resolve, reject) => {
-        DB.Query(`SELECT * FROM ${"`거래처 물품`"} WHERE (${"`물품 ID`"} = ${data.id});`)
+        DB.Query(`SELECT * FROM ${"`거래처 물품`"} WHERE (${"`물품 ID`"} = '${data.id}');`)
         .then(qResult => {
             // 물품 ID가 거래처 물품 테이블에 존재하지 않음.
             if (qResult.length == 0) {
@@ -121,7 +126,7 @@ exports.OrderRequest = (data) => {
 exports.Warehousing = (data) => {
     let amount = null;
     return new Promise((resolve, reject) => {
-        DB.Query(`SELECT * FROM ${"`입고 현황`"} WHERE (${"`물품 ID`"} = ${data.id});`)
+        DB.Query(`SELECT * FROM ${"`입고 현황`"} WHERE (${"`물품 ID`"} = '${data.id}');`)
         .then(qResult => {
             // 물품 ID가 입고 현황 테이블에 존재하지 않음.
             if (qResult.length == 0) {
@@ -130,7 +135,7 @@ exports.Warehousing = (data) => {
             }
             amount = qResult[0]["입고 수량"];
             
-            DB.Query(`SELECT * FROM ${"`전체 재고`"} WHERE (${"`물품 ID`"} = ${data.id});`)
+            DB.Query(`SELECT * FROM ${"`전체 재고`"} WHERE (${"`물품 ID`"} = '${data.id}');`)
             .then(qResult => {
                 // 물품 ID가 전체 재고 테이블에 존재하지 않음.
                 if (qResult.length == 0) {

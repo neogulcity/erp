@@ -4,22 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+    <link rel = "stylesheet" href = "css/iframe.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
-    <table border="1">
-        <th>거래처 ID</th>
-        <th>물품 ID</th>
-        <th>물품명</th>
-        <th>물품 도매가</th>
-        <% data.forEach(function (elem) { %>
+    <table class ="">
+        <thead>
             <tr>
-                <td><%= elem["거래처 ID"] %></td>
-                <td><%= elem["물품 ID"] %></td>
-                <td><%= elem["물품명"] %></td>
-                <td><%= elem["물품 도매가"] %></td>
+                <th class="cols">거래처 ID</th>
+                <th class="cols">물품 ID</th>
+                <th class="cols">물품명</th>
+                <th class="cols">물품 도매가</th>
             </tr>
-        <% }); %>
+        </thead>
+        <tbody id = "loop-corporate-item-list">
+            <% data.forEach(function (elem) { %>
+                <tr>
+                    <td class = "cell"><%= elem["거래처 ID"] %></td>
+                    <td class = "cell"><%= elem["물품 ID"] %></td>
+                    <td class = "cell"><%= elem["물품명"] %></td>
+                    <td class = "cell money"><%= elem["물품 도매가"] %></td>
+                </tr>
+            <% }); %>
+        </tbody>
     </table>
     <script>
         window.addEventListener('message', ReceiveMsg);
@@ -36,6 +44,13 @@
             form.innerHTML = textData;
             document.body.append(form);
             form.submit();
+        }
+
+        var length = document.getElementsByClassName('money').length;
+        for (var i = 0; i < length; i++) {
+            var money = $('.money').eq(i).text();
+            var money2 = money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            $('.money').eq(i).text(money2);
         }
     </script>
 </body>

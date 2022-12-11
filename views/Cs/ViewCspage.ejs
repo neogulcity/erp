@@ -4,20 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+    <link rel = "stylesheet" href = "css/iframe.css">
 </head>
 
 <body>
-    <table border="1">
-        <th>CS ID</th>
-        <th>고객 ID</th>
-        <th>건의 내용</th>
-        <% data.forEach(function (elem) { %>
+    <table class ="">
+        <thead>
             <tr>
-                <td><%= elem["CS ID"] %></td>
-                <td><%= elem["고객 ID"] %></td>
-                <td><%= elem["건의 내용"] %></td>
+                <th class="cols">CS ID</th>
+                <th class="cols">고객 ID</th>
+                <th class="cols">건의 내용</th>
             </tr>
-        <% }); %>
+        </thead>
+        <tbody id = "loop-cs-list">
+            <% data.forEach(function (elem) { %>
+                <tr>
+                    <td class = "cell"><%= elem["CS ID"] %></td>
+                    <td class = "cell"><%= elem["고객 ID"] %></td>
+                    <td class = "cell"><%= elem["건의 내용"] %></td>
+                </tr>
+            <% }); %>
+        </tbody>
     </table>
     <script>
         window.addEventListener('message', ReceiveMsg);

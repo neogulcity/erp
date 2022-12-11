@@ -4,23 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+    <link rel = "stylesheet" href = "css/iframe.css">
 </head>
 
 <body>
-    <form action="/OrderRequest" method="post"accept-charset="UTF-8">
-        <div class = "int-area">
-            <input type = "text" name = "id" id = "id"
-            autocomplete = "off">
-            <label for = "id">물품 ID</label>
-        </div>
-        <div class = "int-area">
-            <input type = "text" name = "amount" id = "amount"
-            autocomplete = "off">
-            <label for = "amount">수량</label>
-        </div>
-        <div class = "btn-area">
-            <button type="submit">전송</button>
-        </div>
-    </form>
+    <div class ="input-tabel">
+        <table>
+            <tr>
+                <td class = "input-head">물품 ID</td>
+                <td><label class = "input_action"><input type="text" name = "id" id = "id"><br></label></td>
+            </tr>
+            <tr>
+                <td class = "input-head">수량</td>
+                <td><label class = "input_action"><input type="text" name = "amount" id = "amount"><br></label></td>
+            </tr>
+        </table>
+        <label class = "input_action"><button class="inputbtn" type="submit" onclick='Send()'>전송하기</button></label>
+    </div>
 </body>
+<script>
+    const Send = () => {
+        let id = document.getElementById("id").value;
+        let amount = document.getElementById("amount").value;
+
+        let form = document.createElement('form');
+        form.action = '/OrderRequest';
+        form.method = 'POST';
+        form.acceptCharset = "UTF-8";
+
+        let textData = '<input type="hidden" name="id" value="' + id + '">';
+        textData += '<input type="hidden" name="amount" value="' + amount + '">';
+
+        form.innerHTML = textData;
+        document.body.append(form);
+        form.submit();
+    }
+</script>
 </html>
