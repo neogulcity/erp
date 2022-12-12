@@ -59,6 +59,7 @@
             let name = event.target.value;
             let frame = document.getElementById(name + "Frame");
             let value = document.getElementById(name + "Value").value;
+            value = `'` + value + `'`;
             frame.contentWindow.postMessage(value, '*');
         }
     </script>    

@@ -15,12 +15,22 @@ exports.CorporateRegistration = (data) => {
             return;
         }
 
-        DB.Insert("거래처", {
-            거래처ID: data.id,
-            거래처명: data.name
-        })
-        .then(result => {
-            resolve(1);
+        DB.Query(`SELECT COUNT(*) FROM ${"`거래처`"} WHERE (${"`거래처 ID`"} = '${data.id}');`)
+        .then(qResult => {
+            // 거래처 ID가 거래처 테이블에 이미 등록되어있음.
+            if (qResult[0]["COUNT(*)"] > 0) {
+                resolve(1);
+                return;
+            }
+            
+            // 거래처 테이블에 데이터 등록.
+            DB.Insert("거래처", {
+                거래처ID: data.id,
+                거래처명: data.name
+            })
+            .then(result => {
+                resolve(2);
+            });
         });
     })
     .then((result => {return result}));

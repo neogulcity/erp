@@ -59,8 +59,8 @@ const createApp = () => {
         app.get("/ViewAllGoodspage", function(req, res) {
             let searchInfo = req.flash('searchInfo');
             if (searchInfo == "false") {
-                res.render("Materials/ViewAllGoodspage", {data:[]});
-                return;
+                // res.render("Materials/ViewAllGoodspage", {data:[]});
+                // return;
             } else if (JSON.stringify(searchInfo) != "[]") {
                 res.render("Materials/ViewAllGoodspage", {data:searchInfo});
                 return;
@@ -76,8 +76,8 @@ const createApp = () => {
         app.get("/ViewCorppage", function(req, res) {
             let searchInfo = req.flash('searchInfo');
             if (searchInfo == "false") {
-                res.render("Materials/ViewCorppage", {data:[]});
-                return;
+                // res.render("Materials/ViewCorppage", {data:[]});
+                // return;
             } else if (JSON.stringify(searchInfo) != "[]") {
                 res.render("Materials/ViewCorppage", {data:searchInfo});
                 return;
@@ -93,8 +93,8 @@ const createApp = () => {
         app.get("/ViewCorpGoodspage", function(req, res) {
             let searchInfo = req.flash('searchInfo');
             if (searchInfo == "false") {
-                res.render("Materials/ViewCorpGoodspage", {data:[]});
-                return;
+                // res.render("Materials/ViewCorpGoodspage", {data:[]});
+                // return;
             } else if (JSON.stringify(searchInfo) != "[]") {
                 res.render("Materials/ViewCorpGoodspage", {data:searchInfo});
                 return;
@@ -110,8 +110,8 @@ const createApp = () => {
         app.get("/ViewWarehousingpage", function(req, res) {
             let searchInfo = req.flash('searchInfo');
             if (searchInfo == "false") {
-                res.render("Materials/ViewWarehousingpage", {data:[]});
-                return;
+                // res.render("Materials/ViewWarehousingpage", {data:[]});
+                // return;
             } else if (JSON.stringify(searchInfo) != "[]") {
                 res.render("Materials/ViewWarehousingpage", {data:searchInfo});
                 return;
@@ -127,8 +127,8 @@ const createApp = () => {
         app.get("/ViewOrderReqpage", function(req, res) {
             let searchInfo = req.flash('searchInfo');
             if (searchInfo == "false") {
-                res.render("Materials/ViewOrderReqpage", {data:[]});
-                return;
+                // res.render("Materials/ViewOrderReqpage", {data:[]});
+                // return;
             } else if (JSON.stringify(searchInfo) != "[]") {
                 res.render("Materials/ViewOrderReqpage", {data:searchInfo});
                 return;
@@ -151,6 +151,10 @@ const createApp = () => {
                     break;
 
                 case 1:
+                    res.write("<script>alert('이미 등록된 거래처입니다.')</script>");
+                    break;
+
+                case 2:
                     res.write("<script>alert('등록되었습니다.')</script>");
                     break;
                 }
@@ -227,8 +231,8 @@ const createApp = () => {
         app.get("/ProcessOrderReqpage", function(req, res) {
             let searchInfo = req.flash('searchInfo');
             if (searchInfo == "false") {
-                res.render("Finance/ProcessOrderReqpage", {data:[]});
-                return;
+                // res.render("Finance/ProcessOrderReqpage", {data:[]});
+                // return;
             } else if (JSON.stringify(searchInfo) != "[]") {
                 res.render("Finance/ProcessOrderReqpage", {data:searchInfo});
                 return;
@@ -281,8 +285,8 @@ const createApp = () => {
             .then(result => {
                 let searchInfo = req.flash('searchInfo');
                 if (searchInfo == "false") {
-                    res.render("Finance/ViewAllFinancepage", {data:[]});
-                    return;
+                    // res.render("Finance/ViewAllFinancepage", {data:[]});
+                    // return;
                 } else if (JSON.stringify(searchInfo) != "[]") {
                     res.render("Finance/ViewAllFinancepage", {data:searchInfo});
                     return;
@@ -299,8 +303,8 @@ const createApp = () => {
         app.get("/ViewAllFixedCostpage", function(req, res) {
             let searchInfo = req.flash('searchInfo');
             if (searchInfo == "false") {
-                res.render("Finance/ViewAllFixedCostpage", {data:[]});
-                return;
+                // res.render("Finance/ViewAllFixedCostpage", {data:[]});
+                // return;
             } else if (JSON.stringify(searchInfo) != "[]") {
                 res.render("Finance/ViewAllFixedCostpage", {data:searchInfo});
                 return;
@@ -316,8 +320,8 @@ const createApp = () => {
         app.get("/ViewEmployeepage", function(req, res) {
             let searchInfo = req.flash('searchInfo');
             if (searchInfo == "false") {
-                res.render("Finance/ViewEmployeepage", {data:[]});
-                return;
+                // res.render("Finance/ViewEmployeepage", {data:[]});
+                // return;
             } else if (JSON.stringify(searchInfo) != "[]") {
                 res.render("Finance/ViewEmployeepage", {data:searchInfo});
                 return;
@@ -335,8 +339,8 @@ const createApp = () => {
             .then(result => {
                 let searchInfo = req.flash('searchInfo');
                 if (searchInfo == "false") {
-                    res.render("Finance/ViewSalespage", {data:[]});
-                    return;
+                    // res.render("Finance/ViewSalespage", {data:[]});
+                    // return;
                 } else if (JSON.stringify(searchInfo) != "[]") {
                     res.render("Finance/ViewSalespage", {data:searchInfo});
                     return;
@@ -356,8 +360,8 @@ const createApp = () => {
         app.get("/ViewCspage", function(req, res) {
             let searchInfo = req.flash('searchInfo');
             if (searchInfo == "false") {
-                res.render("Cs/ViewCspage", {data:[]});
-                return;
+                // res.render("Cs/ViewCspage", {data:[]});
+                // return;
             } else if (JSON.stringify(searchInfo) != "[]") {
                 res.render("Cs/ViewCspage", {data:searchInfo});
                 return;
